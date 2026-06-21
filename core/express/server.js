@@ -222,6 +222,10 @@ function Server(serverConfig = {}) {
         }
 
         responseComponents.statusCode = result.status || 200;
+        if (result && result.isRaw) {
+          expressResponse.status(responseComponents.statusCode).json(result.data);
+          return;
+        }
         responseComponents.body.status = 'success';
         responseComponents.body.message = result.message;
         responseComponents.body.data = result.data || {};
@@ -246,6 +250,9 @@ function Server(serverConfig = {}) {
         responseComponents.body.message = error.isApplicationError
           ? error.message
           : 'Some error occured.';
+        if (error.isApplicationError && error.errorCode) {
+          responseComponents.body.code = error.errorCode;
+        }
         responseComponents.body.errors = error.details || undefined;
         responseComponents.body.data = error.context;
 
