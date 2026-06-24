@@ -40,6 +40,4 @@ const schemaConfig = {
 };
 
 const modelSchema = new ModelSchema(schemaConfig, { collection: modelName });
-modelSchema.index({ slug: 1 }, { unique: true });
-
 module.exports = DatabaseModel.model(modelName, modelSchema, { paranoid: true });
